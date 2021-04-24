@@ -1,0 +1,139 @@
+﻿@model ModelGame.tblAccount
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+     @@import url('https://fonts.googleapis.com/css?family=Codystar:300&display=swap');
+     body{
+         margin:0px;
+         padding:0px;
+         font-family:sans-serif;
+         background:#34495e;
+     }
+     .box {
+         width: 300px;
+         padding: 40px;
+         position: absolute;
+         border-radius: 24px;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%,-50%);
+         text-align: center;
+         overflow: hidden;
+         background-image: linear-gradient(to right, rgba(255,0,0,0), #8CDA7E);
+         box-shadow: 0 5px 15px rgba(0,0,0,.5);
+      }
+     .title{
+         width:400px;
+         height:50px;
+         padding:40px;
+         margin-left:530px;
+         position:absolute;
+         text-align:center;
+     }
+     .box h1{
+        text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+        color:black;
+        text-transform:uppercase;
+        font-weight:500;
+        font-family: URW Chancery L, cursive;
+
+     }
+     .box input[type="text"], .box input[type="password"]{
+         border:0;
+         background:none;
+         display:block;
+         margin:20px auto;
+         text-align:center;
+         border: 2px solid #3498db;
+         padding:14px 10px;
+         background:aquamarine;
+         width:200px;
+         outline:none;
+         color:black;
+         border-radius: 24px;
+         transition:0.25s;
+     }
+    .box input[type="text"]:focus, .box input[type="password"]:focus {
+            width: 280px;
+            border-color: #2ecc71;
+     }
+     .box input[type="submit"] {
+         border: 0;
+         display: block;
+         margin: 20px auto;
+         text-align: center;
+         border: 2px solid #2ecc71;
+         padding: 14px 40px;
+         outline: none;
+         color: black;
+         font-weight: bold;
+         border-radius: 24px;
+         transition: 0.25s;
+         background: #2ecc71;
+         cursor:pointer;
+         float:left;
+     }
+     .box input[type="button"] {
+         border: 0;
+         display: block;
+         margin: 20px auto;
+         text-align: center;
+         border: 2px solid #2ecc71;
+         padding: 14px 40px;
+         outline: none;
+         color: black;
+         font-weight: bold;
+         border-radius: 24px;
+         transition: 0.25s;
+         background: #4a8b2c;
+         cursor:pointer;
+         float:left;
+         margin-left:5px;
+     }
+     .box input[type="submit"]:hover {
+         background: #D2DA50;
+      }
+     .box input[type="button"]:hover{
+         background:#ff6a00;
+     }
+     .neon_a{
+         text-decoration:none;
+         color:#ffffff;
+         font-weight:bold;
+         font-family:Arial;
+         text-transform:uppercase;
+         font-family: URW Chancery L, cursive
+     }
+     .dk{
+         text-decoration: none;
+         color: #ffffff;
+         font-weight: bold;
+         font-family: Arial;
+         text-transform: uppercase;
+      }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h3 contenteditable="true">CHÀO MỪNG BẠN ĐẾN VỚI TRÒ CHƠI TRÚC XANH</h3>
+    </div>
+    <section>
+        <form class="box" action="" method="post">
+            <h1>Đăng nhập</h1>
+            @Html.TextBoxFor(model => model.nameAccount, new { placeholder = "Tên đăng nhập", type = "text" })
+            @Html.ValidationMessageFor(model => model.nameAccount, "", htmlAttributes: new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.password, new { placeholder = "Mật khẩu", type = "password" })
+            @Html.ValidationMessageFor(model => model.password, "", htmlAttributes: new { @class = "text-danger" })<br />
+            <a href="#" class="neon_a">Sử dụng không cần tài khoản</a><br />
+            <input type="submit" name="" value="Đăng nhập" />
+            <input type="button" value="Đăng ký" /><br/>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </form>
+    </section>
+</body>
+</html>

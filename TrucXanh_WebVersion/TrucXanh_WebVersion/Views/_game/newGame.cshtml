@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "newGame";
+    Layout = "~/Views/Shared/_LayoutLevel1.cshtml";
+}<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #721313;
+        }
+        .mainGame {
+            width: 400px;
+            height: 400px;
+            padding: 40px;
+            position: absolute;
+            border-radius: 24px;
+            top: 50%;
+            left: 70%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+            overflow: hidden;
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 6px rgba(255,255,255,0.5);
+        }
+        .mainGame .mainTable {
+            height: 100%;
+            width: 100%;
+            border: 1px solid;
+        }
+        .mainGame .mainTable td {
+             border: 1px solid
+        }
+        .mainGame .mainTable td button {
+             height: 100%;
+             width: 100%;
+             background-image: url('../../Image/level1backgroundbutton.jpg');
+             background-size:cover;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="mainGame" id="id_mainGame">
+
+    </div>
+    <input type="text" id="nameLevel" value="@Session["firstlevelName"]" hidden="hidden"/>
+    <script type="text/javascript">
+        var firstButtonName, secondButtonName;
+        var arrayImageForButton = [];
+        var arrayButton = [];
+        var arrayImageDatabase = @Html.Raw(Json.Encode(@ViewBag.listImage));
+        var numMatch, numWin;
+        function createTable() {
+            var table = document.createElement('TABLE');
+            var nameLevel = '@ViewBag.firstlevelName';
+            var idLevel = '@ViewBag.firstlevelID';
+            var row = parseInt(nameLevel.substring(0, 1));
+            var col = parseInt(nameLevel.substring(nameLevel.length - 1));
+            console.log(arrayImageForButton.length);
+            table.setAttribute('class', 'mainTable');
+            for (var i = 0; i < row; i++) {
+                var tr = document.createElement('TR');
+                table.appendChild(tr);
+                for (var j = 0; j < col; j++) {
+                    var td = document.createElement('TD');
+                    var button = document.createElement('button');
+                    button.setAttribute('id', 'btn' + (i + 1).toString() + (j + 1).toString());
+                    arrayButton.push(button);
+                    td.appendChild(button);
+                    tr.appendChild(td);
+                }
+            }
+            document.getElementById("id_mainGame").appendChild(table);
+            addImageForButton();
+            for (var t = 0; t < arrayImageForButton.length; t++) {
+                console.log(arrayImageForButton[t]);
+            }
+            setValueForButton();
+            playGame();
+            
+        }
+        function disabledButton(arrayButton) {
+            arrayButton.forEach((button1) => {
+                button1.disabled = true;
+            });
+        }
+        function enabledButton(arrayButton) {
+            arrayButton.forEach((button1) => {
+                button1.disabled = false;
+            });
+        }
+        function addImageForButton() {
+            for (var i = 0; i < arrayButton.length; i++) {
+                arrayImageForButton.push(null);
+            }
+            numMatch = 0;
+            numWin = arrayButton.length / 2;
+            if (arrayButton.length % 2 == 0) {
+                for (var i = 0; i < numWin; i++) {
+                    var randImage = Math.floor(Math.random() * arrayImageDatabase.length);
+                    console.log("randImage: " + randImage.toString());
+                    var dem = 0;
+                    while (dem < 2) {
+                        var randButton = Math.floor(Math.random() * arrayImageForButton.length);
+                        console.log("randButton: " + randButton.toString());
+                        if (arrayImageForButton[randButton] == null) {
+                            arrayImageForButton[randButton] = arrayImageDatabase[randImage];
+                            dem++;
+                        }
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < numWin; i++) {
+                    var randImage = Math.floor(Math.random() * arrayImageDatabase.length);
+                    var dem = 0;
+                    while (dem < 2) {
+                        var randButton = Math.floor(Math.random() * arrayImageForButton.length);
+                        if (arrayImageForButton[randButton] == null) {
+                            arrayImageForButton[randButton]== arrayImageDatabase[randImage];
+                            dem++;
+                        }
+                    }
+                }
+                numWin += 1;
+            }
+
+        }
+        function setValueForButton() {
+            var buttonTemp
+            for (var kt = 0; kt < arrayButton.length; kt++) {
+                buttonTemp = document.getElementById(arrayButton[kt].id);
+                buttonTemp.setAttribute('value', kt);
+                console.log(buttonTemp.value);
+            }
+        }
+        function playGame() {
+            var dem = 0;
+            var flag = null;
+            arrayButton.forEach(button => button.addEventListener("click", function () {
+                dem++;
+                button.disabled = true;
+                if (flag == null) {
+                    flag = button;
+                }
+
+                var image = arrayImageForButton[parseInt(button.value)];
+                console.log(image);
+                var path = "url(" + "'" + "../../Image/" + image.nameImage + "'" + ")";
+                button.style.backgroundImage = path;
+                if (dem == 2) {
+                    disabledButton(arrayButton);
+                    if (flag.style.backgroundImage == button.style.backgroundImage) {
+                        setTimeout(function () {
+                            flag.style.visibility = "hidden";
+                            button.style.visibility = "hidden";
+                            flag = null;
+                            dem = 0;
+                            enabledButton(arrayButton);
+                        }, 1000);
+                    }
+                    else {
+                        setTimeout(function () {
+                            flag.style.backgroundImage = "url('../../Image/level1backgroundbutton.jpg')";
+                            button.style.backgroundImage = "url('../../Image/level1backgroundbutton.jpg')";
+
+                            flag = null;
+                            dem = 0;
+                            enabledButton(arrayButton);
+                        }, 1000);
+                    }
+                }
+
+            }));
+        }
+        createTable();
+    </script>
+</body>
+</html>
+
+
